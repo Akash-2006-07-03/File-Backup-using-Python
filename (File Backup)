@@ -1,0 +1,28 @@
+'''Project to backup folder'''
+
+
+import os
+import shutil
+import datetime
+import schedule
+import time
+
+source_dir = "C:/Users/Hp/Pictures/Screenshots"
+destintion_dir = "C:/Users/Hp/Desktop/Backups"
+
+def copy_to_dest_dir(sour_dir,dest_dir):
+    today = datetime.date.today()
+    dest = os.path.join(dest_dir,str(today))
+    
+    try:
+        shutil.copytree(sour_dir,dest)
+        print(f"Folder copied to: {dest}")
+    except FileExistsError:
+        print(f"File already exists in: {dest_dir}")
+
+schedule.every().day.at("23:06").do(lambda : copy_to_dest_dir(source_dir,destintion_dir))
+
+while True:
+    schedule.run_pending()
+    time.sleep(60)
+
